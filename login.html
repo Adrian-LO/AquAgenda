@@ -1,0 +1,206 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AquAgenda - Iniciar sesion</title>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <a href="index.html"><img src="logo.png" alt="AquAgenda" /></a>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="registro.html">Registro</a></li>
+        <li><a href="login.html">Iniciar sesion</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="section login-page">
+    <div class="page-heading">
+      <span class="eyebrow">Acceso</span>
+      <h2 class="section-title">Iniciar sesion</h2>
+      <p>Ingresa con tu usuario o correo. El sistema detecta automaticamente el tipo de cuenta.</p>
+    </div>
+
+    <div class="login-layout">
+      <aside class="login-side-card">
+        <div class="summary-icon"><i class="fas fa-lock"></i></div>
+        <h3>Credenciales demo</h3>
+        <div class="login-demo-list">
+          <button type="button" onclick="usarDemo('admin', 'admin123')">
+            <span>Administrador</span>
+            <strong>admin</strong>
+          </button>
+          <button type="button" onclick="usarDemo('recepcion', 'recepcion123')">
+            <span>Recepcion</span>
+            <strong>recepcion</strong>
+          </button>
+          <button type="button" onclick="usarDemo('profesor', 'profesor123')">
+            <span>Instructor</span>
+            <strong>profesor</strong>
+          </button>
+          <button type="button" onclick="usarDemo('maria.lopez', 'cliente123')">
+            <span>Cliente</span>
+            <strong>maria.lopez</strong>
+          </button>
+        </div>
+      </aside>
+
+      <div class="form-container login-card">
+        <form onsubmit="return iniciarSesion(event)">
+          <div class="panel-heading">
+            <div>
+              <span class="muted-label">AquAgenda</span>
+              <h3>Acceso al sistema</h3>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="usuario">Usuario o correo electronico</label>
+            <input type="text" id="usuario" name="usuario" autocomplete="username" placeholder="maria.lopez" required />
+          </div>
+
+          <div class="form-group">
+            <label for="password">Contraseña</label>
+            <div class="password-field">
+              <input type="password" id="password" name="password" autocomplete="current-password" placeholder="Ingresa tu contraseña" required />
+              <button type="button" class="password-toggle" onclick="togglePassword()" aria-label="Mostrar contraseña">
+                <i class="fas fa-eye"></i>
+              </button>
+            </div>
+          </div>
+
+          <div id="mensaje-login" class="message message-error compact-message" style="display:none;"></div>
+
+          <div class="form-actions login-actions">
+            <button type="submit" class="form-submit">Ingresar</button>
+          </div>
+        </form>
+
+        <div class="login-links">
+          <a href="restaurar.html">Olvidaste tu contraseña?</a>
+          <a href="registro.html">No tienes cuenta? Registrate</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 AquAgenda - Escuela de Natacion</p>
+    <p>Los Mochis, Sinaloa, Mexico</p>
+  </footer>
+
+  <script>
+    const STORAGE_KEY = 'aquaUsuarios';
+    const usuariosDemo = [
+      { id: 'a-1', usuario: 'admin', password: 'admin123', rol: 'administrador', nombre: 'Administrador', correo: 'admin@AquAgenda.com', estado: 'Activo' },
+      { id: 'r-1', usuario: 'recepcion', password: 'recepcion123', rol: 'recepcionista', nombre: 'Recepcion', correo: 'recepcion@AquAgenda.com', estado: 'Activo' },
+      { id: 'p-1', usuario: 'profesor', password: 'profesor123', rol: 'profesor', nombre: 'Juan Perez', correo: 'profesor@AquAgenda.com', estado: 'Activo' },
+      { id: 'c-1', usuario: 'maria.lopez', password: 'cliente123', rol: 'cliente', nombre: 'Maria Lopez', correo: 'cliente@AquAgenda.com', estado: 'Activo', clasesDisponibles: 5 }
+    ];
+
+    document.addEventListener('DOMContentLoaded', inicializarUsuariosLogin);
+
+    function iniciarSesion(event) {
+      event.preventDefault();
+      const usuarioInput = document.getElementById('usuario').value.trim().toLowerCase();
+      const passwordInput = document.getElementById('password').value;
+      const mensaje = document.getElementById('mensaje-login');
+      const usuario = obtenerUsuariosLogin().find((item) =>
+        (item.usuario.toLowerCase() === usuarioInput || String(item.correo || '').toLowerCase() === usuarioInput) &&
+        item.password === passwordInput &&
+        (item.estado || 'Activo') !== 'Inactivo'
+      );
+
+      if (!usuario) {
+        mensaje.textContent = 'Usuario o contraseña incorrectos. Verifica tus datos e intenta nuevamente.';
+        mensaje.style.display = 'block';
+        return false;
+      }
+
+      localStorage.setItem('usuario', JSON.stringify({
+        usuario: usuario.usuario,
+        correo: usuario.correo,
+        rol: usuario.rol,
+        nombre: usuario.nombre
+      }));
+
+      if (usuario.rol === 'cliente' && Number.isFinite(Number(usuario.clasesDisponibles))) {
+        localStorage.setItem('clasesDisponibles', String(usuario.clasesDisponibles));
+      }
+
+      if (localStorage.getItem('pendientePaquete') === 'true' && usuario.rol === 'cliente') {
+        localStorage.removeItem('pendientePaquete');
+        window.location.href = 'comprar_paquetes.html';
+        return false;
+      }
+
+      const paginasPorRol = {
+        administrador: 'home_admin.html',
+        recepcionista: 'home_recepcionista.html',
+        profesor: 'home_instructor.html',
+        cliente: 'home_cliente.html'
+      };
+      window.location.href = paginasPorRol[usuario.rol] || 'index.html';
+      return false;
+    }
+
+    function togglePassword() {
+      const password = document.getElementById('password');
+      const button = document.querySelector('.password-toggle');
+      const icon = button.querySelector('i');
+      const visible = password.type === 'text';
+      password.type = visible ? 'password' : 'text';
+      button.setAttribute('aria-label', visible ? 'Mostrar contraseña' : 'Ocultar contraseña');
+      icon.className = visible ? 'fas fa-eye' : 'fas fa-eye-slash';
+    }
+
+    function usarDemo(usuario, password) {
+      document.getElementById('usuario').value = usuario;
+      document.getElementById('password').value = password;
+      document.getElementById('mensaje-login').style.display = 'none';
+    }
+
+    function inicializarUsuariosLogin() {
+      const actuales = obtenerUsuariosLogin();
+      const merged = [...actuales];
+      usuariosDemo.forEach((demo) => {
+        const index = merged.findIndex((item) => item.id === demo.id);
+        if (index >= 0) {
+          const previo = merged[index];
+          const usuarioPrevioEsCorreo = previo.usuario && previo.usuario === previo.correo;
+          merged[index] = {
+            ...demo,
+            ...previo,
+            usuario: usuarioPrevioEsCorreo ? demo.usuario : (previo.usuario || demo.usuario),
+            correo: previo.correo || demo.correo,
+            password: previo.password || demo.password
+          };
+        } else {
+          merged.push(demo);
+        }
+      });
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
+    }
+
+    function obtenerUsuariosLogin() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+      } catch (err) {
+        return [];
+      }
+    }
+  </script>
+</body>
+</html>
+
+
