@@ -1,0 +1,123 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AquAgenda - Panel del Cliente</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <a href="home_cliente.html"><img src="logo.png" alt="AquAgenda" /></a>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="home_cliente.html">Panel</a></li>
+        <li><a href="index.html#contacto">Contacto</a></li>
+        <li class="profile-menu">
+          <button type="button" class="profile-trigger" onclick="toggleAccountMenu()" aria-label="Abrir menu de cuenta" aria-expanded="false">
+            <i class="fas fa-user"></i>
+          </button>
+          <div id="profile-dropdown" class="profile-dropdown" style="display:none;">
+            <div class="profile-summary">
+              <span class="profile-summary-icon"><i class="fas fa-user"></i></span>
+              <span>
+                <strong id="profile-menu-name">Cliente</strong>
+                <small id="profile-menu-user">@usuario</small>
+              </span>
+            </div>
+            <a href="mi_cuenta.html"><i class="fas fa-user-gear"></i> Mi cuenta</a>
+            <a href="historial_cliente.html"><i class="fas fa-list-alt"></i> Mi historial</a>
+          </div>
+        </li>
+        <li><a href="index.html" class="nav-btn" onclick="localStorage.removeItem('usuario')">Cerrar sesion</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="section">
+    <h2 class="section-title">Panel del Cliente</h2>
+    <div class="card-grid">
+      <a class="card" href="cancelar_clase.html">
+        <i class="fas fa-calendar-minus"></i>
+        <h3>Cancelar Clase</h3>
+        <p>Cancela tus clases programadas siguiendo las politicas de la escuela.</p>
+      </a>
+      <a class="card" href="comprar_paquetes.html">
+        <i class="fas fa-shopping-cart"></i>
+        <h3>Comprar Paquetes</h3>
+        <p>Adquiere paquetes de clases y accesorios para tus entrenamientos.</p>
+      </a>
+      <a class="card" href="calendario.html">
+        <i class="fas fa-calendar"></i>
+        <h3>Calendario</h3>
+        <p>Consulta el calendario para elegir horarios y reservar tus clases.</p>
+      </a>
+    </div>
+  </section>
+
+  <section class="section" id="contacto">
+    <h2 class="section-title">Contacto</h2>
+    <p style="text-align:center;max-width:700px;margin:0 auto 1rem;">
+      Si necesitas ayuda o mas informacion, puedes contactarnos de la siguiente manera:
+    </p>
+    <p style="text-align:center;"><strong>Tel:</strong> 668&nbsp;882&nbsp;4816</p>
+    <p style="text-align:center;"><strong>Direccion:</strong> Agustin Melgar #1411, Jardines del Sol, 81265 Los Mochis, Sin.</p>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 AquAgenda - Escuela de Natacion</p>
+    <p>Los Mochis, Sinaloa, Mexico</p>
+  </footer>
+  <script>
+    document.addEventListener('DOMContentLoaded', hydrateAccountMenu);
+
+    function toggleAccountMenu() {
+      const dropdown = document.getElementById('profile-dropdown');
+      const trigger = document.querySelector('.profile-trigger');
+      const open = dropdown.style.display === 'none';
+      dropdown.style.display = open ? 'block' : 'none';
+      trigger.setAttribute('aria-expanded', String(open));
+    }
+
+    function hydrateAccountMenu() {
+      const usuario = obtenerSesion();
+      document.getElementById('profile-menu-name').textContent = usuario.nombre || 'Cliente';
+      document.getElementById('profile-menu-user').textContent = `@${usuario.usuario || 'usuario'}`;
+      renderProfilePhoto();
+    }
+
+    function renderProfilePhoto() {
+      const foto = localStorage.getItem('fotoPerfilCliente');
+      if (!foto) return;
+      const contenido = `<img src="${foto}" alt="Foto de perfil" />`;
+      const trigger = document.querySelector('.profile-trigger');
+      const summary = document.querySelector('.profile-summary-icon');
+      if (trigger) trigger.innerHTML = contenido;
+      if (summary) summary.innerHTML = contenido;
+    }
+
+    function obtenerSesion() {
+      try {
+        return JSON.parse(localStorage.getItem('usuario') || '{}');
+      } catch (err) {
+        return {};
+      }
+    }
+
+    document.addEventListener('click', (event) => {
+      const menu = document.querySelector('.profile-menu');
+      const dropdown = document.getElementById('profile-dropdown');
+      const trigger = document.querySelector('.profile-trigger');
+      if (menu && dropdown && !menu.contains(event.target)) {
+        dropdown.style.display = 'none';
+        trigger.setAttribute('aria-expanded', 'false');
+      }
+    });
+  </script>
+</body>
+</html>
+
+
