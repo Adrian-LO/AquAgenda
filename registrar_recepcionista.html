@@ -1,0 +1,128 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AquAgenda - Registrar recepcionista</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <a href="home_admin.html"><img src="logo.png" alt="AquAgenda" /></a>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="home_admin.html">Panel</a></li>
+        <li><a href="gestion_usuarios.html">Gestionar usuarios</a></li>
+        <li><a href="login.html" class="nav-btn">Cerrar sesión</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="section admin-form-page">
+    <div class="page-heading">
+      <span class="eyebrow">Equipo de recepción</span>
+      <h2 class="section-title">Registrar recepcionista</h2>
+      <p>Agrega personal de recepción con usuario propio para apoyar en alumnos, clases y cobros operativos.</p>
+    </div>
+
+    <div class="admin-form-layout">
+      <aside class="side-summary-card">
+        <div class="summary-icon"><i class="fas fa-user-tie"></i></div>
+        <h3>Cuenta de recepción</h3>
+        <p>La recepcionista podrá consultar y actualizar información de clientes, registrar pagos internos y apoyar la operación diaria.</p>
+        <dl class="summary-list">
+          <div>
+            <dt>Estado inicial</dt>
+            <dd>Activo</dd>
+          </div>
+          <div>
+            <dt>Permiso</dt>
+            <dd>Clientes y operación</dd>
+          </div>
+          <div>
+            <dt>Acceso</dt>
+            <dd>Usuario y contraseña</dd>
+          </div>
+        </dl>
+      </aside>
+
+      <div class="form-container compact-form-card">
+        <form onsubmit="registrarRecepcionista(event)">
+          <div class="panel-heading">
+            <div>
+              <span class="muted-label">Datos de acceso</span>
+              <h3>Nueva recepcionista</h3>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="nombre-recep">Nombre completo</label>
+              <input type="text" id="nombre-recep" placeholder="Ej. Laura Medina" required />
+            </div>
+            <div class="form-group">
+              <label for="usuario-recep">Usuario</label>
+              <input type="text" id="usuario-recep" placeholder="laura.medina" required />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="correo-recep">Correo electrónico</label>
+              <input type="email" id="correo-recep" placeholder="recepcion@correo.com" required />
+            </div>
+            <div class="form-group">
+              <label for="telefono-recep">Teléfono</label>
+              <input type="tel" id="telefono-recep" placeholder="668 100 2000" />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="contrasena-recep">Contraseña</label>
+              <input type="password" id="contrasena-recep" required />
+            </div>
+            <div class="form-group">
+              <label for="confirmar-recep">Confirmar contraseña</label>
+              <input type="password" id="confirmar-recep" required />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="notas-recep">Notas internas</label>
+            <textarea id="notas-recep" rows="3" placeholder="Turno, responsabilidades o comentarios administrativos"></textarea>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="form-submit">Registrar recepcionista</button>
+            <a href="home_admin.html" class="form-submit form-submit-secondary">Cancelar</a>
+          </div>
+        </form>
+        <div id="mensaje-recepcionista" class="message compact-message" style="display:none;"></div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    function registrarRecepcionista(event) {
+      event.preventDefault();
+      const nombre = document.getElementById('nombre-recep').value;
+      const usuario = document.getElementById('usuario-recep').value;
+      const mensaje = document.getElementById('mensaje-recepcionista');
+      mensaje.textContent = `Recepcionista ${nombre} (@${usuario}) registrada correctamente.`;
+      mensaje.style.display = 'block';
+      event.target.reset();
+    }
+  </script>
+
+  <footer>
+    <p>&copy; 2025 AquAgenda - Escuela de Natación</p>
+    <p>Los Mochis, Sinaloa, México</p>
+  </footer>
+</body>
+</html>
+
+
