@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AquAgenda - Panel del Instructor</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <a href="home_instructor.html"><img src="logo.png" alt="AquAgenda" /></a>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="home_instructor.html">Panel</a></li>
+        <li><a href="index.html#contacto">Contacto</a></li>
+        <li><a href="index.html" class="nav-btn" onclick="localStorage.removeItem('usuario')">Cerrar sesion</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="section">
+    <h2 class="section-title">Panel del Instructor</h2>
+    <p style="max-width:760px;margin:0 auto 2rem;text-align:center;">
+      Consulta tus clases asignadas y envia comentarios de seguimiento al administrador.
+    </p>
+    <div class="card-grid">
+      <a class="card" href="horarios.html">
+        <i class="fas fa-clock"></i>
+        <h3>Mi horario</h3>
+        <p>Revisa las clases que tienes programadas, con fecha, hora y alumno asignado.</p>
+      </a>
+      <a class="card" href="notas_progreso.html">
+        <i class="fas fa-message"></i>
+        <h3>Enviar notas al administrador</h3>
+        <p>Comparte comentarios, observaciones y notas de progreso para seguimiento interno.</p>
+      </a>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 AquAgenda - Escuela de Natacion</p>
+    <p>Los Mochis, Sinaloa, Mexico</p>
+  </footer>
+</body>
+</html>
+
+
