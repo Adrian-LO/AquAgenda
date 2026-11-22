@@ -1,0 +1,205 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AquAgenda - Registro de alumno</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <a href="index.html"><img src="logo.png" alt="AquAgenda" /></a>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="registro.html">Registro</a></li>
+        <li><a href="login.html" class="nav-btn">Iniciar sesión</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="section public-register-page">
+    <div class="page-heading">
+      <span class="eyebrow">Nueva cuenta</span>
+      <h2 class="section-title">Registro de alumno</h2>
+      <p>Registra tus datos para comprar paquetes, reservar clases y consultar tu historial desde el panel del cliente.</p>
+    </div>
+
+    <div class="public-register-layout">
+      <aside class="side-summary-card register-summary">
+        <div class="summary-icon"><i class="fas fa-user-plus"></i></div>
+        <h3>Tu cuenta AquAgenda</h3>
+        <p>El usuario es independiente del correo. El correo y teléfono se usan para avisos y recuperación de contraseña.</p>
+        <dl class="summary-list">
+          <div>
+            <dt>Usuario</dt>
+            <dd>Para iniciar sesión</dd>
+          </div>
+          <div>
+            <dt>Correo</dt>
+            <dd>Contacto y recuperación</dd>
+          </div>
+          <div>
+            <dt>Teléfono</dt>
+            <dd>SMS o WhatsApp</dd>
+          </div>
+        </dl>
+      </aside>
+
+      <div class="form-container compact-form-card">
+        <div class="panel-heading">
+          <div>
+            <span class="muted-label">Datos del alumno</span>
+            <h3>Completa tu registro</h3>
+          </div>
+          <div class="segmented-control" role="tablist" aria-label="Tipo de alumno">
+            <button type="button" class="active" data-tipo="menor" onclick="mostrarFormulario('menor')">Menor</button>
+            <button type="button" data-tipo="adulto" onclick="mostrarFormulario('adulto')">Adulto</button>
+          </div>
+        </div>
+
+        <form id="form-menor" onsubmit="registrarCuenta(event, 'menor')">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="nombre-menor">Nombre completo</label>
+              <input type="text" id="nombre-menor" required />
+            </div>
+            <div class="form-group">
+              <label for="edad-menor">Edad</label>
+              <input type="number" id="edad-menor" min="1" required />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="tutor-menor">Tutor o responsable</label>
+              <input type="text" id="tutor-menor" required />
+            </div>
+            <div class="form-group">
+              <label for="correo-menor">Correo electrónico</label>
+              <input type="email" id="correo-menor" placeholder="responsable@correo.com" required />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="usuario-menor">Usuario</label>
+              <input type="text" id="usuario-menor" placeholder="maria.lopez" required />
+            </div>
+            <div class="form-group">
+              <label for="tel-principal-menor">Teléfono principal</label>
+              <input type="tel" id="tel-principal-menor" placeholder="668 100 2000" required />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="tel-secundario-menor">Teléfono alterno</label>
+              <input type="tel" id="tel-secundario-menor" placeholder="Opcional" />
+            </div>
+            <div class="form-group">
+              <label for="preferencia-menor">Preferencia de horario</label>
+              <select id="preferencia-menor">
+                <option>Matutino</option>
+                <option>Vespertino</option>
+                <option>Sin preferencia</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="observaciones-menor">Información adicional</label>
+            <textarea id="observaciones-menor" rows="3" placeholder="Condiciones, indicaciones o necesidades especiales"></textarea>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="form-submit">Crear cuenta</button>
+            <a href="login.html" class="form-submit form-submit-secondary">Ya tengo cuenta</a>
+          </div>
+        </form>
+
+        <form id="form-adulto" onsubmit="registrarCuenta(event, 'adulto')" style="display:none;">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="nombre-adulto">Nombre completo</label>
+              <input type="text" id="nombre-adulto" required />
+            </div>
+            <div class="form-group">
+              <label for="edad-adulto">Edad</label>
+              <input type="number" id="edad-adulto" min="1" required />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="correo-adulto">Correo electrónico</label>
+              <input type="email" id="correo-adulto" placeholder="nombre@correo.com" required />
+            </div>
+            <div class="form-group">
+              <label for="usuario-adulto">Usuario</label>
+              <input type="text" id="usuario-adulto" placeholder="usuario" required />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="tel-principal-adulto">Teléfono principal</label>
+              <input type="tel" id="tel-principal-adulto" placeholder="668 100 2000" required />
+            </div>
+            <div class="form-group">
+              <label for="preferencia-adulto">Preferencia de horario</label>
+              <select id="preferencia-adulto">
+                <option>Matutino</option>
+                <option>Vespertino</option>
+                <option>Sin preferencia</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="observaciones-adulto">Información adicional</label>
+            <textarea id="observaciones-adulto" rows="3" placeholder="Condiciones, indicaciones o necesidades especiales"></textarea>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="form-submit">Crear cuenta</button>
+            <a href="login.html" class="form-submit form-submit-secondary">Ya tengo cuenta</a>
+          </div>
+        </form>
+
+        <div id="mensaje-registro" class="message compact-message" style="display:none;"></div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    function mostrarFormulario(tipo) {
+      document.getElementById('form-menor').style.display = tipo === 'menor' ? 'block' : 'none';
+      document.getElementById('form-adulto').style.display = tipo === 'adulto' ? 'block' : 'none';
+      document.querySelectorAll('.segmented-control button').forEach((button) => {
+        button.classList.toggle('active', button.dataset.tipo === tipo);
+      });
+      document.getElementById('mensaje-registro').style.display = 'none';
+    }
+
+    function registrarCuenta(event, tipo) {
+      event.preventDefault();
+      const nombreId = tipo === 'menor' ? 'nombre-menor' : 'nombre-adulto';
+      const mensaje = document.getElementById('mensaje-registro');
+      mensaje.textContent = `Cuenta de ${document.getElementById(nombreId).value} creada correctamente. Ya puedes iniciar sesión.`;
+      mensaje.style.display = 'block';
+      event.target.reset();
+    }
+  </script>
+
+  <footer>
+    <p>&copy; 2025 AquAgenda - Escuela de Natación</p>
+    <p>Los Mochis, Sinaloa, México</p>
+  </footer>
+</body>
+</html>
+
+
